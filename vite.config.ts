@@ -7,6 +7,7 @@ import { defineConfig } from 'vite'
 const rootDir = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig({
+  base: process.env.GITHUB_PAGES === 'true' ? '/trading-website/' : '/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {

@@ -2,6 +2,8 @@
 
 Landing page for **Shady**, a sample gold and FX trading agency. Arabic is the default language, with a full English switch, dark and light themes, motion, and an XAUUSD market section.
 
+Live site: [https://kerollos0.github.io/trading-website/](https://kerollos0.github.io/trading-website/)
+
 ## Features
 
 - Arabic-first layout (`dir="rtl"`) with a one-click English switch
