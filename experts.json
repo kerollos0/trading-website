@@ -1,0 +1,20 @@
+{
+  "experts": [
+    {
+      "id": "ea-gold-structure",
+      "title": "XAUUSD Structure Expert",
+      "description": "إكسبيرت لقراءة هيكل الذهب على الفريم الساعة: مناطق العرض والطلب، كسر الهيكل، ومستويات الإبطال قبل الدخول.",
+      "image": "",
+      "link": "https://t.me/ShadyTradingDesk",
+      "createdAt": "2026-09-18T00:00:00.000Z"
+    },
+    {
+      "id": "ea-risk-guard",
+      "title": "Risk Guard",
+      "description": "أداة إدارة مخاطرة للحساب: حجم الصفقة، حد خسارة يومي، ووقف التداول بعد عدد محدد من الخسائر المتتالية.",
+      "image": "",
+      "link": "https://wa.me/971501234567",
+      "createdAt": "2026-09-18T00:00:00.000Z"
+    }
+  ]
+}
