@@ -4,6 +4,15 @@ Landing page for **Shady**, a sample gold and FX trading agency. Arabic is the d
 
 Live site: [https://kerollos0.github.io/trading-website/](https://kerollos0.github.io/trading-website/)
 
+Admin dashboard: run the app locally, then open `/admin`.
+
+Username: `admin`  
+Password: `Shady@2026`
+
+The landing page and the dashboard share one JSON file: `public/experts.json`. The admin writes to it, and the experts section on the site reads from it. That is the whole connection — same project, same file, no extra database.
+
+Change the password in `.env` (`ADMIN_USER`, `ADMIN_PASSWORD`) before using this in production.
+
 ## Features
 
 - Arabic-first layout (`dir="rtl"`) with a one-click English switch

@@ -6,21 +6,28 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 45217",
     "build": "tsc -b && vite build",
+    "start": "node server/index.js",
     "lint": "oxlint",
-    "preview": "vite preview --host 0.0.0.0 --port 45217"
+    "preview": "vite preview --host 0.0.0.0 --port 45217",
+    "deploy:pages": "node scripts/deploy-pages.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.2.1",
     "framer-motion": "^12.23.12",
     "lightweight-charts": "^5.2.1",
     "lucide-react": "^0.544.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.4",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.13",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/express": "^5.0.6",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",

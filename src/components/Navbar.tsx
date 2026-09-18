@@ -6,12 +6,15 @@ import { cn } from '../lib/cn'
 import { Button } from './ui/button'
 import { Logo } from './Brand'
 
+const root = import.meta.env.BASE_URL
+
 const links = [
-  { href: '#top', key: 'home' },
-  { href: '#services', key: 'services' },
-  { href: '#market', key: 'market' },
-  { href: '#about', key: 'about' },
-  { href: '#contact', key: 'contact' },
+  { href: `${root}#top`, key: 'home' },
+  { href: `${root}#services`, key: 'services' },
+  { href: `${root}#experts`, key: 'experts' },
+  { href: `${root}#market`, key: 'market' },
+  { href: `${root}#about`, key: 'about' },
+  { href: `${root}#contact`, key: 'contact' },
 ] as const
 
 export function Navbar() {

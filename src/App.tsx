@@ -1,28 +1,20 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AppProviders } from './context/AppProviders'
-import { About } from './components/About'
-import { ChartSection } from './components/ChartSection'
-import { Contact } from './components/Contact'
-import { Footer } from './components/Footer'
-import { Hero } from './components/Hero'
-import { MarketTicker } from './components/MarketTicker'
-import { Navbar } from './components/Navbar'
-import { Services } from './components/Services'
+import { AdminPage } from './pages/AdminPage'
+import { LandingPage } from './pages/LandingPage'
+
+const basename =
+  import.meta.env.BASE_URL === '/' ? undefined : import.meta.env.BASE_URL.replace(/\/$/, '')
 
 export default function App() {
   return (
     <AppProviders>
-      <div className="relative min-h-svh overflow-x-hidden bg-canvas text-ink">
-        <Navbar />
-        <main>
-          <Hero />
-          <MarketTicker />
-          <Services />
-          <ChartSection />
-          <About />
-          <Contact />
-        </main>
-        <Footer />
-      </div>
+      <BrowserRouter basename={basename}>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+        </Routes>
+      </BrowserRouter>
     </AppProviders>
   )
 }

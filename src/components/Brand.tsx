@@ -5,7 +5,7 @@ export function Logo({ compact = false }: { compact?: boolean }) {
   const { copy } = useApp()
 
   return (
-    <a href="#top" className="group flex items-center gap-3">
+    <a href={import.meta.env.BASE_URL} className="group flex items-center gap-3">
       <span className="relative grid size-10 place-items-center overflow-hidden rounded-md border border-gold/35 bg-gold/10">
         <svg viewBox="0 0 32 32" className="size-7" aria-hidden>
           <rect x="6" y="16" width="3" height="9" rx="0.4" fill="currentColor" className="text-gold" />
