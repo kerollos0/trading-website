@@ -55,8 +55,10 @@ export function Experts() {
                     </div>
                   )}
                   <div className="flex flex-1 flex-col p-6">
-                    <h3 className="text-xl font-semibold text-ink">{expert.title}</h3>
-                    <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">
+                    <h3 className="bidi-auto text-xl font-semibold text-ink" dir="auto">
+                      {expert.title}
+                    </h3>
+                    <p className="bidi-auto mt-3 flex-1 text-sm leading-relaxed text-muted" dir="auto">
                       {expert.description}
                     </p>
                     {expert.link ? (

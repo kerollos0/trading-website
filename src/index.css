@@ -78,6 +78,16 @@ html[lang="ar"] {
   font-family: var(--font-display);
 }
 
+html[lang="ar"] body,
+html[lang="en"] body {
+  text-align: start;
+}
+
+.bidi-auto {
+  unicode-bidi: plaintext;
+  text-align: start;
+}
+
 #root {
   min-height: 100svh;
 }

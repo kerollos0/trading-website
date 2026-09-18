@@ -154,6 +154,7 @@ export function AdminPage() {
                 onChange={(event) => setUsername(event.target.value)}
                 className="mt-2 w-full rounded-2xl border border-line bg-canvas-2 px-4 py-3 text-ink outline-none focus:border-gold"
                 autoComplete="username"
+                dir="ltr"
               />
             </label>
             <label className="mt-4 block text-sm text-muted">
@@ -164,6 +165,7 @@ export function AdminPage() {
                 onChange={(event) => setPassword(event.target.value)}
                 className="mt-2 w-full rounded-2xl border border-line bg-canvas-2 px-4 py-3 text-ink outline-none focus:border-gold"
                 autoComplete="current-password"
+                dir="ltr"
               />
             </label>
             {loginError ? <p className="mt-4 text-sm text-down">{loginError}</p> : null}
@@ -183,7 +185,8 @@ export function AdminPage() {
                 <input
                   value={form.title}
                   onChange={(event) => setForm((current) => ({ ...current, title: event.target.value }))}
-                  className="mt-2 w-full rounded-2xl border border-line bg-canvas-2 px-4 py-3 text-ink outline-none focus:border-gold"
+                  className="bidi-auto mt-2 w-full rounded-2xl border border-line bg-canvas-2 px-4 py-3 text-ink outline-none focus:border-gold"
+                  dir="auto"
                   required
                 />
               </label>
@@ -194,7 +197,8 @@ export function AdminPage() {
                   onChange={(event) =>
                     setForm((current) => ({ ...current, description: event.target.value }))
                   }
-                  className="mt-2 min-h-32 w-full rounded-2xl border border-line bg-canvas-2 px-4 py-3 text-ink outline-none focus:border-gold"
+                  className="bidi-auto mt-2 min-h-32 w-full rounded-2xl border border-line bg-canvas-2 px-4 py-3 text-ink outline-none focus:border-gold"
+                  dir="auto"
                   required
                 />
               </label>
@@ -283,8 +287,12 @@ export function AdminPage() {
                         />
                       ) : null}
                       <div className="min-w-0 flex-1">
-                        <h3 className="font-semibold">{expert.title}</h3>
-                        <p className="mt-1 line-clamp-3 text-sm text-muted">{expert.description}</p>
+                        <h3 className="bidi-auto font-semibold" dir="auto">
+                          {expert.title}
+                        </h3>
+                        <p className="bidi-auto mt-1 line-clamp-3 text-sm text-muted" dir="auto">
+                          {expert.description}
+                        </p>
                         <div className="mt-3 flex gap-3 text-sm">
                           <button
                             type="button"
