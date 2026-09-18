@@ -48,10 +48,7 @@ export function ChartSection() {
               </div>
             </div>
 
-            <div
-              className="grid gap-4 border-b border-line px-4 py-4 sm:grid-cols-4 sm:px-6"
-              dir="ltr"
-            >
+            <div className="grid gap-4 border-b border-line px-4 py-4 sm:grid-cols-4 sm:px-6">
               <QuoteStat label={selected} value={formatPrice(quote.close, quote.symbol.digits)} />
               <QuoteStat
                 label={copy.market.change}
@@ -161,6 +158,7 @@ function QuoteStat({
           tone === 'down' && 'text-down',
           !tone && 'text-ink',
         )}
+        dir="ltr"
       >
         {value}
       </p>

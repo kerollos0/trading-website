@@ -32,8 +32,8 @@ Edit `src/lib/market.ts`:
 
 ```ts
 export const CONTACTS = {
-  telegram: 'https://t.me/ShadyTrading',
-  telegramHandle: '@ShadyTrading',
+  telegram: 'https://t.me/ShadyTradingDesk',
+  telegramHandle: '@ShadyTradingDesk',
   whatsapp: 'https://wa.me/971501234567',
   phone: '+971501234567',
   phoneDisplay: '+971 50 123 4567',

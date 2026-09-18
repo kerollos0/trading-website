@@ -13,7 +13,7 @@ export function MarketTicker() {
         <span className="hidden shrink-0 text-[11px] uppercase tracking-[0.22em] text-gold sm:block">
           {copy.ticker.label}
         </span>
-        <div className="relative min-w-0 flex-1 overflow-hidden" dir="ltr">
+        <div className="relative min-w-0 flex-1 overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_28px,black_calc(100%-28px),transparent)]" dir="ltr">
           <div className="ticker-track flex w-max gap-8">
             {[0, 1].map((copyIndex) => (
               <div key={copyIndex} className="flex gap-8">
