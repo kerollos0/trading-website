@@ -104,7 +104,7 @@ export const copy = {
     experts: {
       kicker: 'أدوات المكتب',
       title: 'إكسبيرتات التداول',
-      subtitle: 'ملفات وأدوات يصدرها المكتب للمتداولين. القائمة تتحدّث من لوحة التحكم.',
+      subtitle: 'ملفات وأدوات يصدرها المكتب للمتداولين. القائمة تتحدّث فورًا من لوحة التحكم.',
       empty: 'لا توجد إكسبيرتات معروضة حالياً.',
       open: 'افتح الأداة',
     },
@@ -112,7 +112,7 @@ export const copy = {
       kicker: 'لوحة التحكم',
       title: 'إدارة الإكسبيرتات',
       loginTitle: 'دخول الأدمن',
-      loginHint: 'أضف العنوان والوصف والصورة والرابط. التعديل يظهر في قسم الخبراء على الموقع.',
+      loginHint: 'أضف العنوان والوصف والصورة والرابط. الحفظ يظهر فورًا في قسم الخبراء على الموقع، من غير رفع جديد.',
       username: 'اسم المستخدم',
       password: 'كلمة المرور',
       login: 'دخول',
@@ -131,7 +131,7 @@ export const copy = {
       empty: 'لا يوجد إكسبيرتات بعد. أضف أول أداة من النموذج.',
       error: 'بيانات الدخول غير صحيحة.',
       saveError: 'تعذر الحفظ. تأكد من العنوان والوصف، وأن الصورة أصغر من 900 كيلوبايت.',
-      offline: 'لوحة التحكم تشتغل مع السيرفر المحلي. شغّل npm run dev ثم افتح /admin',
+      offline: 'تعذر الاتصال بلوحة التحكم. بعد رفع الموقع على Vercel فعّل Blob من Storage.',
       back: 'العودة للموقع',
     },
     contact: {
@@ -268,7 +268,7 @@ export const copy = {
     experts: {
       kicker: 'Desk tools',
       title: 'Trading experts',
-      subtitle: 'Files and tools the desk publishes for traders. This list is managed from the admin dashboard.',
+      subtitle: 'Files and tools the desk publishes for traders. This list updates live from the admin dashboard.',
       empty: 'No experts are listed yet.',
       open: 'Open tool',
     },
@@ -276,7 +276,7 @@ export const copy = {
       kicker: 'Dashboard',
       title: 'Manage experts',
       loginTitle: 'Admin login',
-      loginHint: 'Add a title, description, optional image, and link. Changes appear in the experts section on the site.',
+      loginHint: 'Add a title, description, optional image, and link. A save appears on the live experts section immediately — no new deploy.',
       username: 'Username',
       password: 'Password',
       login: 'Sign in',
@@ -295,7 +295,7 @@ export const copy = {
       empty: 'No experts yet. Add the first tool from the form.',
       error: 'Invalid username or password.',
       saveError: 'Could not save. Check the title and description, and keep images under 900KB.',
-      offline: 'The dashboard needs the local server. Run npm run dev, then open /admin',
+      offline: 'Could not reach the admin API. After deploying to Vercel, enable Blob from Storage.',
       back: 'Back to site',
     },
     contact: {

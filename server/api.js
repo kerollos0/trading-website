@@ -1,30 +1,11 @@
 import cookieParser from 'cookie-parser'
 import crypto from 'node:crypto'
-import fs from 'node:fs'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import express from 'express'
-
-const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const dataFile = path.join(rootDir, 'public', 'experts.json')
+import { persistImage, readStore, writeStore } from './store.js'
 
 const ADMIN_USER = process.env.ADMIN_USER || 'admin'
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Shady@2026'
 const ADMIN_SECRET = process.env.ADMIN_SECRET || 'shady-desk-change-this-secret'
-
-function readStore() {
-  try {
-    const raw = fs.readFileSync(dataFile, 'utf8')
-    const parsed = JSON.parse(raw)
-    return { experts: Array.isArray(parsed.experts) ? parsed.experts : [] }
-  } catch {
-    return { experts: [] }
-  }
-}
-
-function writeStore(store) {
-  fs.writeFileSync(dataFile, `${JSON.stringify(store, null, 2)}\n`)
-}
 
 function signSession() {
   const exp = Date.now() + 7 * 24 * 60 * 60 * 1000
@@ -57,6 +38,16 @@ function requireAuth(req, res, next) {
   next()
 }
 
+function cookieOptions() {
+  return {
+    httpOnly: true,
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    secure: Boolean(process.env.VERCEL),
+  }
+}
+
 function cleanExpert(input, previous) {
   const title = String(input.title || '').trim()
   const description = String(input.description || '').trim()
@@ -72,10 +63,10 @@ function cleanExpert(input, previous) {
   if (link && !/^https?:\/\//i.test(link)) {
     throw new Error('invalid_link')
   }
-  if (image && !image.startsWith('data:image/')) {
+  if (image && !image.startsWith('data:image/') && !image.startsWith('https://')) {
     throw new Error('invalid_image')
   }
-  if (image.length > 1_400_000) {
+  if (image.startsWith('data:image/') && image.length > 1_400_000) {
     throw new Error('image_too_large')
   }
 
@@ -89,79 +80,94 @@ function cleanExpert(input, previous) {
   }
 }
 
-export function expertsApi() {
-  const app = express()
-  app.use(express.json({ limit: '2mb' }))
-  app.use(cookieParser())
+function sendJson(res, body, status = 200) {
+  res.setHeader('Cache-Control', 'no-store')
+  res.status(status).json(body)
+}
 
-  app.get('/experts', (_req, res) => {
-    res.json(readStore())
+function attachRoutes(router) {
+  router.get('/experts', async (_req, res) => {
+    try {
+      sendJson(res, await readStore())
+    } catch {
+      sendJson(res, { error: 'store_failed' }, 500)
+    }
   })
 
-  app.get('/session', (req, res) => {
-    res.json({ ok: isAuthed(req) })
+  router.get('/session', (req, res) => {
+    sendJson(res, { ok: isAuthed(req) })
   })
 
-  app.post('/login', (req, res) => {
+  router.post('/login', (req, res) => {
     const username = String(req.body?.username || '')
     const password = String(req.body?.password || '')
     if (!safeEqual(username, ADMIN_USER) || !safeEqual(password, ADMIN_PASSWORD)) {
-      res.status(401).json({ error: 'invalid_credentials' })
+      sendJson(res, { error: 'invalid_credentials' }, 401)
       return
     }
-    res.cookie('shady_admin', signSession(), {
-      httpOnly: true,
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    })
-    res.json({ ok: true })
+    res.cookie('shady_admin', signSession(), cookieOptions())
+    sendJson(res, { ok: true })
   })
 
-  app.post('/logout', (_req, res) => {
+  router.post('/logout', (_req, res) => {
     res.clearCookie('shady_admin', { path: '/' })
-    res.json({ ok: true })
+    sendJson(res, { ok: true })
   })
 
-  app.post('/experts', requireAuth, (req, res) => {
+  router.post('/experts', requireAuth, async (req, res) => {
     try {
-      const store = readStore()
+      const store = await readStore()
       const expert = cleanExpert(req.body)
+      expert.image = await persistImage(expert.image, expert.id)
       store.experts.unshift(expert)
-      writeStore(store)
-      res.json({ expert })
+      await writeStore(store)
+      sendJson(res, { expert })
     } catch (error) {
-      res.status(400).json({ error: error instanceof Error ? error.message : 'invalid' })
+      sendJson(res, { error: error instanceof Error ? error.message : 'invalid' }, 400)
     }
   })
 
-  app.put('/experts/:id', requireAuth, (req, res) => {
+  router.put('/experts/:id', requireAuth, async (req, res) => {
     try {
-      const store = readStore()
+      const store = await readStore()
       const index = store.experts.findIndex((item) => item.id === req.params.id)
       if (index === -1) {
-        res.status(404).json({ error: 'not_found' })
+        sendJson(res, { error: 'not_found' }, 404)
         return
       }
       const expert = cleanExpert(req.body, store.experts[index])
+      expert.image = await persistImage(expert.image, expert.id)
       store.experts[index] = expert
-      writeStore(store)
-      res.json({ expert })
+      await writeStore(store)
+      sendJson(res, { expert })
     } catch (error) {
-      res.status(400).json({ error: error instanceof Error ? error.message : 'invalid' })
+      sendJson(res, { error: error instanceof Error ? error.message : 'invalid' }, 400)
     }
   })
 
-  app.delete('/experts/:id', requireAuth, (req, res) => {
-    const store = readStore()
-    const next = store.experts.filter((item) => item.id !== req.params.id)
-    if (next.length === store.experts.length) {
-      res.status(404).json({ error: 'not_found' })
-      return
+  router.delete('/experts/:id', requireAuth, async (req, res) => {
+    try {
+      const store = await readStore()
+      const next = store.experts.filter((item) => item.id !== req.params.id)
+      if (next.length === store.experts.length) {
+        sendJson(res, { error: 'not_found' }, 404)
+        return
+      }
+      await writeStore({ experts: next })
+      sendJson(res, { ok: true })
+    } catch {
+      sendJson(res, { error: 'store_failed' }, 500)
     }
-    writeStore({ experts: next })
-    res.json({ ok: true })
   })
+}
 
+export function expertsApi() {
+  const app = express()
+  app.use(express.json({ limit: '3mb' }))
+  app.use(cookieParser())
+  attachRoutes(app)
+  const prefixed = express.Router()
+  attachRoutes(prefixed)
+  app.use('/api', prefixed)
   return app
 }

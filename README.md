@@ -2,16 +2,30 @@
 
 Landing page for **Shady**, a sample gold and FX trading agency. Arabic is the default language, with a full English switch, dark and light themes, motion, and an XAUUSD market section.
 
-Live site: [https://kerollos0.github.io/trading-website/](https://kerollos0.github.io/trading-website/)
+Live site (GitHub Pages): [https://kerollos0.github.io/trading-website/](https://kerollos0.github.io/trading-website/)
 
-Admin dashboard: run the app locally, then open `/admin`.
+## How the dashboard connects to the landing
 
-Username: `admin`  
-Password: `Shady@2026`
+The client does **not** redeploy to add an expert.
 
-The landing page and the dashboard share one JSON file: `public/experts.json`. The admin writes to it, and the experts section on the site reads from it. That is the whole connection — same project, same file, no extra database.
+- The landing reads from `GET /api/experts`
+- The admin at `/admin` writes with `POST /api/experts`
+- On Vercel, that data lives in **Blob storage**, so a save appears on the public site immediately
+- Locally, the same API writes `public/experts.json`
 
-Change the password in `.env` (`ADMIN_USER`, `ADMIN_PASSWORD`) before using this in production.
+Deploy the whole app on Vercel (not GitHub Pages) for this to work in production. After the first deploy: Vercel → Storage → Create Blob. Then set these environment variables:
+
+- `ADMIN_USER`
+- `ADMIN_PASSWORD`
+- `ADMIN_SECRET`
+- `BLOB_READ_WRITE_TOKEN` (added automatically when you create Blob)
+
+Admin login: `/admin`
+
+Default local login:
+
+- Username: `admin`
+- Password: `Shady@2026`
 
 ## Features
 
